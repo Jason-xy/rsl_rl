@@ -6,5 +6,13 @@
 """Definitions for neural networks."""
 
 from .memory import Memory
+from .feature_extractor import Conv2DEncoder, Conv3DEncoder, MLPEncoder, ImageEncoder, STImageEncoder
 
-__all__ = ["Memory"]
+__all__ = [
+    "Memory",
+    "Conv2DEncoder",
+    "Conv3DEncoder",
+    "MLPEncoder",
+    "ImageEncoder",
+    "STImageEncoder",
+]
