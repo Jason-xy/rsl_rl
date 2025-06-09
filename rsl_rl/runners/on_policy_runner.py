@@ -264,6 +264,10 @@ class OnPolicyRunner:
             stop = time.time()
             learn_time = stop - start
             self.current_learning_iteration = it
+
+            if self.training_type == "distillation":
+                self.alg.teacher_action_prob *= self.alg.teacher_action_prob_decay
+
             # log info
             if self.log_dir is not None and not self.disable_logs:
                 # Log information

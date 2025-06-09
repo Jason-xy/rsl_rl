@@ -25,6 +25,7 @@ class Distillation:
         num_learning_epochs=1,
         gradient_length=15,
         learning_rate=1e-3,
+        teacher_action_prob_decay=0.0,
         max_grad_norm=None,
         loss_type="mse",
         device="cpu",
@@ -57,6 +58,8 @@ class Distillation:
         self.gradient_length = gradient_length
         self.learning_rate = learning_rate
         self.max_grad_norm = max_grad_norm
+        self.teacher_action_prob_decay = teacher_action_prob_decay
+        self.teacher_action_prob = 1.0
 
         # initialize the loss function
         if loss_type == "mse":
@@ -90,7 +93,9 @@ class Distillation:
         # record the observations
         self.transition.observations = obs
         self.transition.privileged_observations = teacher_obs
-        return self.transition.actions
+        # Randomly choose whether to use the teacher's actions based on the decay probability
+        actions = self.transition.privileged_actions if torch.rand(1).item() < self.teacher_action_prob else self.transition.actions
+        return actions
 
     def process_env_step(self, rewards, dones, infos):
         # record the rewards and dones
